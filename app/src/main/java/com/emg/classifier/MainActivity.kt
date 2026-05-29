@@ -36,6 +36,10 @@ class MainActivity : AppCompatActivity() {
     private var freqWindowStart  = System.currentTimeMillis()
     private var freqSampleCount  = 0
 
+    private lateinit var tvCh1: TextView
+    private lateinit var tvCh2: TextView
+    private lateinit var tvCh3: TextView
+
     private val permissions: Array<String> get() =
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.S) {
             arrayOf(
@@ -65,6 +69,10 @@ class MainActivity : AppCompatActivity() {
         tvPrediction  = findViewById(R.id.tvPrediction)
         tvFrequency   = findViewById(R.id.tvFrequency)
 
+        tvCh1 = findViewById(R.id.tvCh1)
+        tvCh2 = findViewById(R.id.tvCh2)
+        tvCh3 = findViewById(R.id.tvCh3)
+
         vibrator     = getSystemService(Context.VIBRATOR_SERVICE) as Vibrator
         bleManager   = BLEManager(this)
         tfliteModel  = TFLiteModel(this)
@@ -91,7 +99,10 @@ class MainActivity : AppCompatActivity() {
         if (sampleBuffer.size > 200) sampleBuffer.removeAt(0)
 
         if (totalSamples % 5 == 0) {
-            tvEMGValues.text   = "CH1: %.4f  CH2: %.4f  CH3: %.4f".format(sample[0], sample[1], sample[2])
+            tvCh1.text = "%.4f".format(sample[0])
+            tvCh2.text = "%.4f".format(sample[1])
+            tvCh3.text = "%.4f".format(sample[2])
+
             tvSampleCount.text = "Muestras: $totalSamples"
             updateFrequency()
         }
@@ -119,11 +130,11 @@ class MainActivity : AppCompatActivity() {
     private fun updatePredictionUI(clsId: Int, name: String, confidence: Float) {
         tvPrediction.text = "$name\n(${(confidence * 100).toInt()}%)"
         if (clsId == Constants.LABEL_CLASSES[Constants.RISK_CLASS_INDEX] && alertActive) {
-            tvPrediction.setTextColor(Color.parseColor("#FF1744"))
-            layoutRoot.setBackgroundColor(Color.parseColor("#1A0000"))
+            tvPrediction.setTextColor(Color.parseColor("#C0392B"))
+            layoutRoot.setBackgroundColor(Color.parseColor("#FDF0EE"))
         } else {
-            tvPrediction.setTextColor(Color.parseColor("#00E676"))
-            layoutRoot.setBackgroundColor(Color.parseColor("#0A0A0A"))
+            tvPrediction.setTextColor(Color.parseColor("#1E3A8A"))
+            layoutRoot.setBackgroundColor(Color.parseColor("#F4F6FB"))
         }
     }
 
@@ -171,7 +182,7 @@ class MainActivity : AppCompatActivity() {
         sampleBuffer.clear(); validationBuffer.clear()
         totalSamples = 0; strideCounter = 0; consecutiveRisk = 0; alertActive = false
         freqSampleCount = 0; freqWindowStart = System.currentTimeMillis()
-        tvPrediction.text = "—"; tvEMGValues.text = "CH1: —  CH2: —  CH3: —"
+        tvCh1.text = "—"; tvCh2.text = "—"; tvCh3.text = "—"
         tvSampleCount.text = "Muestras: 0"; tvFrequency.text = "— Hz"
         tvStatus.setTextColor(Color.parseColor("#AAAAAA"))
         tvPrediction.setTextColor(Color.parseColor("#00E676"))

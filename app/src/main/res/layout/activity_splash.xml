@@ -1,0 +1,104 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/layoutSplash"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:gravity="center"
+    android:background="#FFFFFF"
+    android:padding="40dp">
+
+    <!-- Top spacer -->
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1"/>
+
+    <!-- Logo universitario -->
+    <ImageView
+        android:id="@+id/ivLogo"
+        android:layout_width="160dp"
+        android:layout_height="160dp"
+        android:src="@drawable/logo_javeriana"
+        android:scaleType="fitCenter"
+        android:contentDescription="Logo Pontificia Universidad Javeriana Cali"/>
+
+    <!-- Separador sutil -->
+    <View
+        android:layout_width="48dp"
+        android:layout_height="2dp"
+        android:background="#1E3A8A"
+        android:layout_marginTop="28dp"
+        android:layout_marginBottom="28dp"/>
+
+    <!-- Nombre de la app -->
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="APP STC"
+        android:textSize="28sp"
+        android:textColor="#1E3A8A"
+        android:textStyle="bold"
+        android:letterSpacing="0.12"
+        android:gravity="center"/>
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Sistema de Clasificación de Gestos EMG"
+        android:textSize="13sp"
+        android:textColor="#5B6D8A"
+        android:gravity="center"
+        android:paddingTop="6dp"
+        android:paddingHorizontal="16dp"/>
+
+    <!-- Middle spacer -->
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1"/>
+
+    <!-- Footer institucional -->
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:gravity="center"
+        android:paddingBottom="32dp">
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:background="#E5EAF2"
+            android:layout_marginBottom="20dp"/>
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="DESARROLLADO POR"
+            android:textSize="9sp"
+            android:textColor="#9AAABB"
+            android:letterSpacing="0.20"/>
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Pontificia Universidad Javeriana Cali"
+            android:textSize="13sp"
+            android:textColor="#1E3A8A"
+            android:textStyle="bold"
+            android:paddingTop="4dp"
+            android:gravity="center"/>
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Ingeniería Biomédica"
+            android:textSize="11sp"
+            android:textColor="#7B93B0"
+            android:paddingTop="2dp"/>
+
+    </LinearLayout>
+
+</LinearLayout>
