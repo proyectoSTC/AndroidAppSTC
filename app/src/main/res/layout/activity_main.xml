@@ -314,6 +314,20 @@
 
         </LinearLayout>
 
+        <!-- ══ BOTÓN DESCONECTAR ══════════════════════════════════════════════ -->
+        <Button
+            android:id="@+id/btnDisconnect"
+            android:layout_width="match_parent"
+            android:layout_height="48dp"
+            android:text="Detener recepción"
+            android:textSize="14sp"
+            android:textColor="#FFFFFF"
+            android:backgroundTint="#7B5EA7"
+            android:letterSpacing="0.03"
+            android:layout_marginTop="16dp"
+            android:enabled="false"
+            android:alpha="0.45"/>
+
         <!-- ══ FOOTER ══════════════════════════════════════════════════════════ -->
         <LinearLayout
             android:layout_width="match_parent"

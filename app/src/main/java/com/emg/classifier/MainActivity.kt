@@ -17,8 +17,12 @@ private const val PERMISSION_REQUEST_CODE = 100
 class MainActivity : AppCompatActivity() {
 
     private lateinit var btnConnect:    Button
+    private lateinit var btnDisconnect: Button
     private lateinit var tvStatus:      TextView
     private lateinit var tvEMGValues:   TextView
+    private lateinit var tvCh1:         TextView
+    private lateinit var tvCh2:         TextView
+    private lateinit var tvCh3:         TextView
     private lateinit var tvSampleCount: TextView
     private lateinit var tvPrediction:  TextView
     private lateinit var tvFrequency:   TextView
@@ -35,10 +39,6 @@ class MainActivity : AppCompatActivity() {
     private var alertActive      = false
     private var freqWindowStart  = System.currentTimeMillis()
     private var freqSampleCount  = 0
-
-    private lateinit var tvCh1: TextView
-    private lateinit var tvCh2: TextView
-    private lateinit var tvCh3: TextView
 
     private val permissions: Array<String> get() =
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.S) {
@@ -61,17 +61,17 @@ class MainActivity : AppCompatActivity() {
         setContentView(R.layout.activity_main)
 
         // Bind views
-        layoutRoot    = findViewById(R.id.layoutRoot)
-        btnConnect    = findViewById(R.id.btnConnect)
-        tvStatus      = findViewById(R.id.tvStatus)
-        tvEMGValues   = findViewById(R.id.tvEMGValues)
-        tvSampleCount = findViewById(R.id.tvSampleCount)
-        tvPrediction  = findViewById(R.id.tvPrediction)
-        tvFrequency   = findViewById(R.id.tvFrequency)
-
-        tvCh1 = findViewById(R.id.tvCh1)
-        tvCh2 = findViewById(R.id.tvCh2)
-        tvCh3 = findViewById(R.id.tvCh3)
+        layoutRoot     = findViewById(R.id.layoutRoot)
+        btnConnect     = findViewById(R.id.btnConnect)
+        btnDisconnect  = findViewById(R.id.btnDisconnect)
+        tvStatus       = findViewById(R.id.tvStatus)
+        tvEMGValues    = findViewById(R.id.tvEMGValues)
+        tvCh1          = findViewById(R.id.tvCh1)
+        tvCh2          = findViewById(R.id.tvCh2)
+        tvCh3          = findViewById(R.id.tvCh3)
+        tvSampleCount  = findViewById(R.id.tvSampleCount)
+        tvPrediction   = findViewById(R.id.tvPrediction)
+        tvFrequency    = findViewById(R.id.tvFrequency)
 
         vibrator     = getSystemService(Context.VIBRATOR_SERVICE) as Vibrator
         bleManager   = BLEManager(this)
@@ -81,8 +81,15 @@ class MainActivity : AppCompatActivity() {
         bleManager.onSampleReceived = { sample -> onNewSample(sample) }
 
         btnConnect.setOnClickListener {
-            if (hasPermissions()) { resetState(); bleManager.startScan() }
+            if (hasPermissions()) { resetState(); bleManager.startScan(); setConnectedState(connecting = true) }
             else requestPermissions()
+        }
+
+        btnDisconnect.setOnClickListener {
+            bleManager.disconnect()
+            resetState()
+            setConnectedState(connecting = false)
+            tvStatus.text = "Desconectado. Presiona Conectar para volver a escuchar."
         }
     }
 
@@ -92,17 +99,31 @@ class MainActivity : AppCompatActivity() {
         tfliteModel.close()
     }
 
+    // ── Estado visual de los botones ──────────────────────────────────────────
+
+    private fun setConnectedState(connecting: Boolean) {
+        btnConnect.isEnabled    = !connecting
+        btnConnect.alpha        = if (connecting) 0.45f else 1.0f
+        btnDisconnect.isEnabled = connecting
+        btnDisconnect.alpha     = if (connecting) 1.0f else 0.45f
+    }
+
+    // ── Lógica de muestras ────────────────────────────────────────────────────
+
     private fun onNewSample(sample: FloatArray) {
+        // Activar botón desconectar la primera vez que llegan datos
+        if (totalSamples == 0) setConnectedState(connecting = true)
+
         totalSamples++; freqSampleCount++; strideCounter++
         sampleBuffer.add(sample)
         validationBuffer.add(sample)
         if (sampleBuffer.size > 200) sampleBuffer.removeAt(0)
 
         if (totalSamples % 5 == 0) {
-            tvCh1.text = "%.4f".format(sample[0])
-            tvCh2.text = "%.4f".format(sample[1])
-            tvCh3.text = "%.4f".format(sample[2])
-
+            tvCh1.text         = "%.4f".format(sample[0])
+            tvCh2.text         = "%.4f".format(sample[1])
+            tvCh3.text         = "%.4f".format(sample[2])
+            tvEMGValues.text   = "CH1: %.4f  CH2: %.4f  CH3: %.4f".format(sample[0], sample[1], sample[2])
             tvSampleCount.text = "Muestras: $totalSamples"
             updateFrequency()
         }
@@ -150,13 +171,13 @@ class MainActivity : AppCompatActivity() {
 
     private fun triggerRiskAlert() {
         tvStatus.text = "⚠ MOVIMIENTO DE RIESGO DETECTADO"
-        tvStatus.setTextColor(Color.parseColor("#FF1744"))
+        tvStatus.setTextColor(Color.parseColor("#C0392B"))
         @Suppress("DEPRECATION")
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O)
             vibrator.vibrate(VibrationEffect.createOneShot(300, VibrationEffect.DEFAULT_AMPLITUDE))
         else vibrator.vibrate(300)
         Handler(Looper.getMainLooper()).postDelayed({
-            tvStatus.setTextColor(Color.parseColor("#AAAAAA"))
+            tvStatus.setTextColor(Color.parseColor("#4A5568"))
             tvStatus.text = "Recibiendo EMG…"
         }, 2000)
     }
@@ -182,11 +203,14 @@ class MainActivity : AppCompatActivity() {
         sampleBuffer.clear(); validationBuffer.clear()
         totalSamples = 0; strideCounter = 0; consecutiveRisk = 0; alertActive = false
         freqSampleCount = 0; freqWindowStart = System.currentTimeMillis()
+        tvPrediction.text  = "—"
         tvCh1.text = "—"; tvCh2.text = "—"; tvCh3.text = "—"
-        tvSampleCount.text = "Muestras: 0"; tvFrequency.text = "— Hz"
-        tvStatus.setTextColor(Color.parseColor("#AAAAAA"))
-        tvPrediction.setTextColor(Color.parseColor("#00E676"))
-        layoutRoot.setBackgroundColor(Color.parseColor("#0A0A0A"))
+        tvSampleCount.text = "Muestras: 0"
+        tvFrequency.text   = "— Hz"
+        tvStatus.setTextColor(Color.parseColor("#4A5568"))
+        tvStatus.text      = "Listo para conectar"
+        tvPrediction.setTextColor(Color.parseColor("#1E3A8A"))
+        layoutRoot.setBackgroundColor(Color.parseColor("#F4F6FB"))
     }
 
     private fun hasPermissions() = permissions.all {
@@ -199,8 +223,9 @@ class MainActivity : AppCompatActivity() {
     override fun onRequestPermissionsResult(code: Int, perms: Array<out String>, results: IntArray) {
         super.onRequestPermissionsResult(code, perms, results)
         if (code == PERMISSION_REQUEST_CODE) {
-            if (results.all { it == PackageManager.PERMISSION_GRANTED }) { resetState(); bleManager.startScan() }
-            else Toast.makeText(this, "Permisos denegados", Toast.LENGTH_LONG).show()
+            if (results.all { it == PackageManager.PERMISSION_GRANTED }) {
+                resetState(); bleManager.startScan(); setConnectedState(connecting = true)
+            } else Toast.makeText(this, "Permisos denegados", Toast.LENGTH_LONG).show()
         }
     }
 }
