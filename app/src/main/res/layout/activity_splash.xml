@@ -46,12 +46,12 @@
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Sistema de Clasificación de Gestos EMG"
-        android:textSize="13sp"
-        android:textColor="#5B6D8A"
         android:gravity="center"
+        android:paddingHorizontal="16dp"
         android:paddingTop="6dp"
-        android:paddingHorizontal="16dp"/>
+        android:text="Sistema de Clasificación de Gestos"
+        android:textColor="#5B6D8A"
+        android:textSize="13sp" />
 
     <!-- Middle spacer -->
     <View
@@ -94,10 +94,10 @@
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Ingeniería Biomédica"
-            android:textSize="11sp"
+            android:paddingTop="2dp"
+            android:text="Versión 1.0"
             android:textColor="#7B93B0"
-            android:paddingTop="2dp"/>
+            android:textSize="11sp" />
 
     </LinearLayout>
 

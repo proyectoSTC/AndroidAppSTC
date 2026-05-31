@@ -27,13 +27,13 @@
 
             <TextView
                 android:id="@+id/tvTitle"
-                android:layout_width="wrap_content"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:letterSpacing="0.08"
                 android:text="APP STC"
-                android:textSize="26sp"
                 android:textColor="#FFFFFF"
-                android:textStyle="bold"
-                android:letterSpacing="0.08"/>
+                android:textSize="26sp"
+                android:textStyle="bold" />
 
             <TextView
                 android:id="@+id/tvSubtitle"
