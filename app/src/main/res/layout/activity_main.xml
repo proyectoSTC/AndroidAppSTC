@@ -277,6 +277,19 @@
                 android:layout_height="wrap_content"
                 android:visibility="gone"/>
 
+
+            <!-- Botón Ver Señal — agregar antes del cierre de la tarjeta SEÑAL EMG -->
+            <Button
+                android:id="@+id/btnGraph"
+                android:layout_width="match_parent"
+                android:layout_height="40dp"
+                android:text="Ver Señal EMG"
+                android:textSize="13sp"
+                android:textColor="#FFFFFF"
+                android:backgroundTint="#0D9488"
+                android:letterSpacing="0.03"
+                android:layout_marginTop="12dp"/>
+
         </LinearLayout>
 
         <!-- ══ TARJETA: CLASIFICACIÓN ═════════════════════════════════════════ -->

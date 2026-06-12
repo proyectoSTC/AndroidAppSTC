@@ -1,0 +1,181 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:background="#F4F6FB">
+
+    <!-- ══ HEADER ══════════════════════════════════════════════════════════════ -->
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:gravity="center_vertical"
+        android:background="#1E3A8A"
+        android:paddingHorizontal="16dp"
+        android:paddingTop="36dp"
+        android:paddingBottom="14dp">
+
+        <ImageButton
+            android:id="@+id/btnBack"
+            android:layout_width="36dp"
+            android:layout_height="36dp"
+            android:src="@android:drawable/ic_menu_revert"
+            android:background="?attr/selectableItemBackgroundBorderless"
+            android:tint="#FFFFFF"
+            android:contentDescription="Volver"/>
+
+        <LinearLayout
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:orientation="vertical"
+            android:paddingStart="10dp">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="SEÑAL EMG EN TIEMPO REAL"
+                android:textColor="#FFFFFF"
+                android:textSize="15sp"
+                android:textStyle="bold"
+                android:letterSpacing="0.06"/>
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="3 canales · 0 – 3.3 V"
+                android:textColor="#A5B8D8"
+                android:textSize="10sp"
+                android:paddingTop="2dp"/>
+
+        </LinearLayout>
+
+    </LinearLayout>
+
+    <!-- ══ CLASIFICACIÓN EN TIEMPO REAL ════════════════════════════════════════ -->
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:gravity="center_vertical"
+        android:background="#FFFFFF"
+        android:paddingHorizontal="16dp"
+        android:paddingVertical="10dp"
+        android:elevation="2dp">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="GESTO: "
+            android:textSize="11sp"
+            android:textColor="#7B5EA7"
+            android:textStyle="bold"
+            android:letterSpacing="0.12"/>
+
+        <TextView
+            android:id="@+id/tvGraphPrediction"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:text="—"
+            android:textSize="16sp"
+            android:textColor="#1E3A8A"
+            android:textStyle="bold"
+            android:fontFamily="monospace"/>
+
+    </LinearLayout>
+
+    <!-- ══ GRÁFICA CH1 ══════════════════════════════════════════════════════════ -->
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1"
+        android:orientation="vertical"
+        android:background="@drawable/card_background"
+        android:layout_marginHorizontal="12dp"
+        android:layout_marginTop="10dp"
+        android:padding="8dp"
+        android:elevation="2dp">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="CH 1"
+            android:textSize="9sp"
+            android:textColor="#1E3A8A"
+            android:textStyle="bold"
+            android:letterSpacing="0.15"
+            android:paddingBottom="2dp"/>
+
+        <com.github.mikephil.charting.charts.LineChart
+            android:id="@+id/chartCh1"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="1"/>
+
+    </LinearLayout>
+
+    <!-- ══ GRÁFICA CH2 ══════════════════════════════════════════════════════════ -->
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1"
+        android:orientation="vertical"
+        android:background="@drawable/card_background"
+        android:layout_marginHorizontal="12dp"
+        android:layout_marginTop="8dp"
+        android:padding="8dp"
+        android:elevation="2dp">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="CH 2"
+            android:textSize="9sp"
+            android:textColor="#7B5EA7"
+            android:textStyle="bold"
+            android:letterSpacing="0.15"
+            android:paddingBottom="2dp"/>
+
+        <com.github.mikephil.charting.charts.LineChart
+            android:id="@+id/chartCh2"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="1"/>
+
+    </LinearLayout>
+
+    <!-- ══ GRÁFICA CH3 ══════════════════════════════════════════════════════════ -->
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1"
+        android:orientation="vertical"
+        android:background="@drawable/card_background"
+        android:layout_marginHorizontal="12dp"
+        android:layout_marginTop="8dp"
+        android:layout_marginBottom="12dp"
+        android:padding="8dp"
+        android:elevation="2dp">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="CH 3"
+            android:textSize="9sp"
+            android:textColor="#0D9488"
+            android:textStyle="bold"
+            android:letterSpacing="0.15"
+            android:paddingBottom="2dp"/>
+
+        <com.github.mikephil.charting.charts.LineChart
+            android:id="@+id/chartCh3"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="1"/>
+
+    </LinearLayout>
+
+</LinearLayout>

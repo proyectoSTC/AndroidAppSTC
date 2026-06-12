@@ -80,6 +80,9 @@ class MainActivity : AppCompatActivity() {
         bleManager.onStatusChanged  = { msg -> tvStatus.text = msg }
         bleManager.onSampleReceived = { sample -> onNewSample(sample) }
 
+        val btnGraph = findViewById<android.widget.Button>(R.id.btnGraph)
+        btnGraph.setOnClickListener { startActivity(android.content.Intent(this, GraphActivity::class.java)) }
+
         btnConnect.setOnClickListener {
             if (hasPermissions()) { resetState(); bleManager.startScan(); setConnectedState(connecting = true) }
             else requestPermissions()
@@ -116,6 +119,7 @@ class MainActivity : AppCompatActivity() {
 
         totalSamples++; freqSampleCount++; strideCounter++
         sampleBuffer.add(sample)
+        EMGDataRepository.pushSample(sample)
         validationBuffer.add(sample)
         if (sampleBuffer.size > 200) sampleBuffer.removeAt(0)
 
@@ -150,6 +154,7 @@ class MainActivity : AppCompatActivity() {
 
     private fun updatePredictionUI(clsId: Int, name: String, confidence: Float) {
         tvPrediction.text = "$name\n(${(confidence * 100).toInt()}%)"
+        EMGDataRepository.pushPrediction("$name  (${(confidence * 100).toInt()}%)")
         if (clsId == Constants.LABEL_CLASSES[Constants.RISK_CLASS_INDEX] && alertActive) {
             tvPrediction.setTextColor(Color.parseColor("#C0392B"))
             layoutRoot.setBackgroundColor(Color.parseColor("#FDF0EE"))
